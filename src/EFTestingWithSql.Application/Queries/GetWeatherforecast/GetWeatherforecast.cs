@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using EFTestingWithSql.Data;
+using EFTestingWithSql.Data.Models;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,27 +10,27 @@ using System.Threading.Tasks;
 
 namespace EFTestingWithSql.Application.Queries.GetWeatherforecast
 {
-
-
-
     internal class GetWeatherforecast : IRequestHandler<GetWeatherforecastRequest, GetWeatherforecastResponse>
     {
-
         private string[] summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
+        private readonly WeatherContext _context;
 
-        public Task<GetWeatherforecastResponse> Handle(GetWeatherforecastRequest request, CancellationToken cancellationToken)
+        public GetWeatherforecast(WeatherContext context)
         {
-            var forecast = Enumerable.Range(1, 5).Select(index =>
-            new WeatherForecast
-            (
-                DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                Random.Shared.Next(-20, 55),
-                summaries[Random.Shared.Next(summaries.Length)]
-            ));
-            return Task.FromResult(new GetWeatherforecastResponse { Forecasts = forecast });
+            _context = context;
+        }               
+
+        public async Task<GetWeatherforecastResponse> Handle(GetWeatherforecastRequest request, CancellationToken cancellationToken)
+        {
+            return new GetWeatherforecastResponse { 
+                Forecasts = await _context.Forecasts
+                .Select(x => new WeatherForecast(DateOnly.FromDateTime(x.Date), x.TemperatureC, x.Sumary))
+                .ToListAsync()
+            };
+            
         }
     }
 }

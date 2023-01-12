@@ -3,6 +3,7 @@ using EFTestingWithSql.Application;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using EFTestingWithSql.Data;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddDbContext<WeatherContext>(opt => opt.UseInMemoryDatabase("Weather"));
+builder.Services.AddDbContext<WeatherContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddMediatR(typeof(ApplicationReference));
 
 var app = builder.Build();
