@@ -32,3 +32,5 @@ app.MapGet("/weatherforecast", async (IMediator mediator) =>
 .WithOpenApi();
 
 app.Run();
+
+public partial class Program { } // Makes this class public for the console app template.

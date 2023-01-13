@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{76E95F4B-1
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFTestingWithSql.WebApi.Tests", "EFTestingWithSql.WebApi.Tests\EFTestingWithSql.WebApi.Tests.csproj", "{89E5268F-562D-49AA-B9BC-EA988A7BF23A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{A915F925-D049-4D0B-8F24-ADCCA3D31F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A915F925-D049-4D0B-8F24-ADCCA3D31F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A915F925-D049-4D0B-8F24-ADCCA3D31F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89E5268F-562D-49AA-B9BC-EA988A7BF23A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89E5268F-562D-49AA-B9BC-EA988A7BF23A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89E5268F-562D-49AA-B9BC-EA988A7BF23A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89E5268F-562D-49AA-B9BC-EA988A7BF23A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 		{B9E9A251-42ED-4887-97EB-1CF2432A698D} = {38C5ABCB-143B-46B2-A2B2-9871C0FCCA53}
 		{DB1BF943-F958-42D2-977F-6ED62ADFE2DF} = {38C5ABCB-143B-46B2-A2B2-9871C0FCCA53}
 		{A915F925-D049-4D0B-8F24-ADCCA3D31F7A} = {38C5ABCB-143B-46B2-A2B2-9871C0FCCA53}
+		{89E5268F-562D-49AA-B9BC-EA988A7BF23A} = {5D7CFC52-011B-480D-AA18-33917A31E58B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2AD789EF-6C5D-4CC0-A03C-3F0EF9987B6A}
