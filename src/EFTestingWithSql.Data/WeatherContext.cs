@@ -23,7 +23,19 @@ namespace EFTestingWithSql.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            string[] summaries = new[]
+            {
+                "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+            };
 
+            var rand = new Random(4337);
+
+            var seedData = Enumerable.Range(0, 30).Select(index =>
+            
+                new Forecast { Id = index + 1, Date = DateTime.Now.Date.AddDays(index * -1), TemperatureC = rand.Next(0,30), Sumary = summaries[rand.Next(0, summaries.Length)] }
+            );
+
+            modelBuilder.Entity<Forecast>().HasData(seedData);
         }
 
     }
