@@ -19,5 +19,12 @@ namespace EFTestingWithSql.Data
 
         public DbSet<Forecast> Forecasts { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+
+        }
+
     }
 }

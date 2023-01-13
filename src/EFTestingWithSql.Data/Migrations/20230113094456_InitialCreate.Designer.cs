@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFTestingWithSql.Data.Migrations
 {
     [DbContext(typeof(WeatherContext))]
-    [Migration("20230113074323_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20230113094456_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
