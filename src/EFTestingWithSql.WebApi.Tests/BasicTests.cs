@@ -20,6 +20,8 @@ namespace EFTestingWithSql.WebApi.Tests
             // Arrange
             var client = _factory.CreateClient();
 
+            var client2 = _factory.CreateClient(null);
+
             // Act
             var response = await client.GetAsync(url);
 

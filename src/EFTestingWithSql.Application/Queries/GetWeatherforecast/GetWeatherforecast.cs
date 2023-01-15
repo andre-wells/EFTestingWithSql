@@ -12,10 +12,6 @@ namespace EFTestingWithSql.Application.Queries.GetWeatherforecast
 {
     internal class GetWeatherforecast : IRequestHandler<GetWeatherforecastRequest, GetWeatherforecastResponse>
     {
-        private string[] summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
         private readonly WeatherContext _context;
 
         public GetWeatherforecast(WeatherContext context)
