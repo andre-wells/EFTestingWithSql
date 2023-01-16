@@ -3,7 +3,6 @@ using EFTestingWithSql.Application;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using EFTestingWithSql.Data;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WeatherContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Prev config
-//builder.Services.AddDbContext<WeatherContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddMediatR(typeof(ApplicationReference));
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
