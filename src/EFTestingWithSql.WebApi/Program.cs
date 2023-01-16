@@ -14,6 +14,11 @@ builder.Services.AddDbContext<WeatherContext>(opt => opt.UseSqlServer(builder.Co
 builder.Services.AddMediatR(typeof(ApplicationReference));
 var app = builder.Build();
 
+// Apply migrations
+using var scope = app.Services.CreateScope();
+using var context = scope.ServiceProvider.GetRequiredService<WeatherContext>();
+context.Database.Migrate();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -21,10 +26,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/weatherforecast", async (IMediator mediator) =>
+app.MapGet("/weatherforecast", async (IMediator mediator, ILogger<Program> logger) =>
 {
-    var result = await mediator.Send(new GetWeatherforecastRequest());
-    return result.Forecasts;
+	try
+	{
+        var result = await mediator.Send(new GetWeatherforecastRequest());
+        return result.Forecasts;
+    }
+	catch (Exception ex)
+	{
+        logger.LogError(ex, "Failed to fetch forcasts.");
+		throw;
+	}
+    
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();

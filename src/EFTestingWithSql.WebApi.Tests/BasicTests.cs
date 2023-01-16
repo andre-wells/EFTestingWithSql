@@ -16,11 +16,10 @@ namespace EFTestingWithSql.WebApi.Tests
         [Theory]
         [InlineData("/weatherforecast")]
         public async Task BasicTest(string url)
-        {            
+        {
             // Arrange
-            var client = _factory.CreateClient();
-
-            var client2 = _factory.CreateClient(null);
+            using var db = _factory.CreateThrowawayDb();
+            var client = _factory.CreateClientWithDatabase(db);            
 
             // Act
             var response = await client.GetAsync(url);
