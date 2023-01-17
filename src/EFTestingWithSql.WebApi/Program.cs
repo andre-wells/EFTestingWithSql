@@ -14,11 +14,6 @@ builder.Services.AddDbContext<WeatherContext>(opt => opt.UseSqlServer(builder.Co
 builder.Services.AddMediatR(typeof(ApplicationReference));
 var app = builder.Build();
 
-// Apply migrations
-using var scope = app.Services.CreateScope();
-using var context = scope.ServiceProvider.GetRequiredService<WeatherContext>();
-context.Database.Migrate();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

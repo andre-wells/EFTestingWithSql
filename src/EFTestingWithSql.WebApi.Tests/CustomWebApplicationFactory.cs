@@ -13,10 +13,11 @@ using ThrowawayDb;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json.Bson;
+using System.Reflection.Metadata.Ecma335;
 
 namespace EFTestingWithSql.WebApi.Tests
 {
-    public class CustomWebApplicationFactory<TProgram> 
+    public class CustomWebApplicationFactory<TProgram>
         : WebApplicationFactory<TProgram> where TProgram : class
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -25,32 +26,45 @@ namespace EFTestingWithSql.WebApi.Tests
             // such as replacing an external data store with a fake.
         }
 
-        public HttpClient CreateClientWithDatabase(ThrowawayDatabase db)
+        internal HttpClient CreateClientForDatabase(ThrowawayDatabase db) 
+            => GetFactoryForDatabase(db).CreateClient();
+
+
+        internal IServiceProvider GetServiceProviderForDatabase(ThrowawayDatabase db)
+            => GetFactoryForDatabase(db).Services;
+
+        internal ThrowawayDatabase CreateThrowawayDb()
         {
-            return this.WithWebHostBuilder(config =>
-            {
-                // Perofrm any 
+            // Instance could be configured through environment variables.                       
+
+            var db = ThrowawayDatabase.FromLocalInstance("(localdb)\\mssqllocaldb", "TEST_");
+
+            var factory = GetFactoryForDatabase(db);
+
+            // Apply migrations
+            using var scope = factory.Services.CreateScope();
+            using var context = scope.ServiceProvider.GetRequiredService<WeatherContext>();
+            context.Database.Migrate();
+
+            return db;
+
+        }
+
+        private WebApplicationFactory<TProgram> GetFactoryForDatabase(ThrowawayDatabase db) =>
+            WithWebHostBuilder(config =>
+            {                
                 config.ConfigureTestServices(services =>
                 {
-                    var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType ==typeof(DbContextOptions<WeatherContext>));
+                    var dbContextDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<WeatherContext>));
 
                     ArgumentNullException.ThrowIfNull(dbContextDescriptor);
 
-                     services.Remove(dbContextDescriptor);
+                    services.Remove(dbContextDescriptor);
 
                     services.AddDbContext<WeatherContext>(opt => opt.UseSqlServer(db.ConnectionString));
 
                 });
 
-            }).CreateClient();
-        }
-
-        internal ThrowawayDatabase CreateThrowawayDb()
-        {
-            // Instance could be configured through environment variables.           
-            // If feasible, we could create the database in this step instead of relying on the WebApi to run migrations.
-            return ThrowawayDatabase.FromLocalInstance("(localdb)\\mssqllocaldb", "TEST_"); 
-            
-        }
+            });
     }
 }
